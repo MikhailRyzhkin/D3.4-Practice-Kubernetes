@@ -48,13 +48,13 @@
 
 
 Запускаем создание сущностей из всех yaml файлов, находящихся в рабочем каталоге:
-kubectl apply -f ./
+  - kubectl apply -f ./
 
 И смотрим результат развёртывания и состояние кластера:
-kubectl get all
-kubectl get secrets
-kubectl get nodes
-minikube status -p multinode-demo
+  - kubectl get all
+  - kubectl get secrets
+  - kubectl get nodes
+  - minikube status -p multinode-demo
 
 ![Screenshot_1](https://github.com/MikhailRyzhkin/D3.4-Practice-Kubernetes/assets/69116076/1cb443f8-4070-4a89-b77d-4a3180d6546f)
 
