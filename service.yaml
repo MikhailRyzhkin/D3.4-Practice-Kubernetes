@@ -1,0 +1,16 @@
+apiVersion: v1
+# Тип создаваемого ресурса
+kind: Service
+metadata:
+  # Имя сервиса
+  name: sf-webserver
+spec:
+  # Отбор Pod’a для сервиса по метке
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      # Порт, на котором будет принимать соединения сервис
+      port: 80
+      # На какой порт в Pod’е перенаправлять трафик
+      targetPort: 80

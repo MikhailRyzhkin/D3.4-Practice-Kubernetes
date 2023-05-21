@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+# Тип создаваемого ресурса
+kind: Deployment
+metadata:
+# Имя Deployment - nginx-sf
+  name: nginx-sf
+  # Метки Deployment, которые используются для идентификации
+  labels:
+    app: nginx
+spec:
+  selector:
+    # Устанавливает связь между Deployment и управляемыми Pod’ами
+     # Отбор Pod’a для деплоя по метке - nginx
+    matchLabels:
+      app: nginx
+  # Запускает 3 пода, созданных по шаблону ниже
+  replicas: 3
+  # Блок содержит информацию о создаваемых Deployment’ом Pod’ах
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      # В этом блоке мы уже описываем контейнеры
+      containers:
+      # Имя контейнера
+      - name: nginx
+        # Образ, который будет использовать контейнер
+        image: nginx:1.21.1-alpine
+        ports:
+        # Три наших реплики будут слушать подключения на порту 80
+        - containerPort: 80
+        # Блок монтирования в контейнер конфига nginx
+        volumeMounts:
+        # Имя объявленного хранилища на уровне Pod’а
+        - name: config
+          # Путь монтирование в контейнере данных конфига
+          mountPath: "/etc/nginx"
+          readOnly: true
+        volumeMounts:
+        - name: auth-basic
+          mountPath: "/etc/nginx/conf.d/.htpasswd"
+          readOnly: true
+      # С какими хранилищами будем работать в этом Pod’e
+      volumes:
+      - name: config
+        configMap:
+          # Имя объекта, с которым будем работать
+          name: nginx-config
+          items:
+          # Указываем ключ свойства, которое хотим забрать - конфиг-файл nginx.conf
+          - key: nginx.conf
+          #  Имя файла, которое будет смонтировано у нас в Pod’е
+            path: nginx.conf
+      # Cекрет для создания basic auth аутентификации в nginx
+      - name: auth-basic
+        secret:
+          secretName: auth-basic
