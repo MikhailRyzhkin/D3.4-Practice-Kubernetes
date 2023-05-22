@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   # Имя ConfigMap
   name: nginx-config
+# Конфигурационный файл nginx
 data:
   nginx.conf: |
     user nginx;
@@ -18,7 +19,7 @@ data:
           location / {
             root   /usr/share/nginx/html;
             index  index.html index.htm;
-            auth_basic "Hi, You need to auth!!!!!";
+            auth_basic "Good afternoon, Please, you need to authentication.";
             auth_basic_user_file /etc/nginx/conf.d/.htpasswd;
         }
       }
